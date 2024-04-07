@@ -1,7 +1,11 @@
 package Memo;
 
+import javafx.animation.KeyFrame;
 import javafx.animation.PauseTransition;
+import javafx.animation.Timeline;
 import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -22,8 +26,10 @@ public class MemoPlay extends Application {
     private static Player currentPlayer, player1, player2;
     private static int step, id, length,score;
     private static Button currentButton;
+    private Card currentCard;
     private boolean isPaused;
     private static long startTime;
+    private Timeline timeline;
     @Override
     public void start(Stage stage) {
         Label titleLabel = new Label("PLAY MEMO GAME");
@@ -148,24 +154,43 @@ public class MemoPlay extends Application {
 
         GridPane.setHgrow(scoreBox, Priority.ALWAYS);
 
+        stage.setTitle("MEMO. Time: 00 seconds");
+        timeline = new Timeline();
+        timeline.getKeyFrames().add(
+                new KeyFrame(Duration.seconds(1),
+                        new EventHandler<ActionEvent>() {
+                            private int secondsElapsed = 0;
+                            @Override
+                            public void handle(ActionEvent event) {
+                                secondsElapsed++;
+                                stage.setTitle("MEMO. Time: " + secondsElapsed + " seconds");
+                            }
+                        }
+                )
+        );
+        timeline.setCycleCount(Timeline.INDEFINITE);
+        timeline.play();
+
         Scene scene = new Scene(gridPane);
         stage.setScene(scene);
-        stage.setTitle("MEMO game");
         stage.setResizable(false);
         stage.show();
     }
 
     public void clickOnIt(Button btn, Card card, Stage stage) {
         if (isPaused) { return;}
+        if (card.getState() == 1) { return;}
         ImageView imageView = card.getImage();
         btn.setGraphic(imageView);
         if (step == 0) {
             id = card.getID();
             currentButton = btn;
+            currentCard = card;
             card.setState(1);
         } else {
             int state = (id == card.getID() ? 2: 0);
             card.setState(state);
+            if (currentCard != null) {currentCard.setState(state); }
             if (state == 2) {
                 currentPlayer.increaseScore();
                 score += 2;
@@ -188,6 +213,7 @@ public class MemoPlay extends Application {
     }
 
     public void finishTheGame(Stage stage) {
+        timeline.stop();
         long endTime = System.nanoTime();
         double elapsedTimeInSeconds = Math.round((endTime - startTime) / 1_000_000_000.0);
 
@@ -217,8 +243,7 @@ public class MemoPlay extends Application {
         }
     }
 
-    public HBox
-    infoPanel() {
+    public HBox infoPanel() {
         HBox flBox = new HBox(10);
 
         Label label1name = new Label(player1.getName() + ": ");
@@ -243,6 +268,7 @@ public class MemoPlay extends Application {
         labelCurrent.setPrefWidth(250);
         labelCurrent.setAlignment(Pos.BASELINE_CENTER);
         labelCurrent.setTextFill(Color.BROWN);
+
 
         flBox.getChildren().addAll(label1name, label1score, labelCurrent, label2name, label2score);
 

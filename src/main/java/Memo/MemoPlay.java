@@ -151,7 +151,6 @@ public class MemoPlay extends Application {
             hbox.setPadding(new Insets(10));
             gridPane.add(hbox, 0, i+1);
         }
-
         GridPane.setHgrow(scoreBox, Priority.ALWAYS);
 
         stage.setTitle("MEMO. Time: 00 seconds");

@@ -1,3 +1,8 @@
+/**
+ * This class represents a Card object with attributes such as id, state, location on the field, image.
+ * It provides methods for setting and retrieving the information.
+ */
+
 package Memo;
 
 import javafx.scene.image.Image;
@@ -12,6 +17,16 @@ public class Card {
     private int state;
     private int location;
     private ImageView image;
+
+    private String soundFile;
+
+    public String getSoundFile() {
+        return soundFile;
+    }
+
+    public void setSoundFile(String soundFile) {
+        this.soundFile = soundFile;
+    }
 
     public int getState() {
         return state;
@@ -58,6 +73,9 @@ public class Card {
         this.image = image;
     }
 
+    /**
+     * The method creates an imageView from the file (the path parameter shows the path to the jpg file
+     */
     private static ImageView createImageView(String path) {
         try {
             FileInputStream inputStream = new FileInputStream(path);

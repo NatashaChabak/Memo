@@ -52,7 +52,9 @@ public class MemoGameApp extends Application {
         Label titleLabel = new Label("PLAY MEMO GAME");
         drawStartPanel(stage, titleLabel);
     }
-
+    /**
+     * The method creates a starting panel with players' names and with 3 buttons
+     */
     public void drawStartPanel(Stage stage, Label titleLabel) {
 
         setLabelParams(titleLabel);
@@ -86,6 +88,9 @@ public class MemoGameApp extends Application {
         stage.show();
     }
 
+    /**
+     * The method creates 3 buttons and sets the action on every button (startGame)
+     */
     public VBox startButtons(Stage stage) {
 
         Button btn1 = new Button("Play with Cats");
@@ -102,6 +107,9 @@ public class MemoGameApp extends Application {
         return buttonsBox;
     }
 
+    /**
+     * The method draws TextFields and Labels for players
+     */
     public static VBox drawPlayers() {
         VBox playersBox = new VBox();
         player1Field = new TextField();
@@ -111,6 +119,9 @@ public class MemoGameApp extends Application {
         return playersBox;
     }
 
+    /**
+     * The method creates text field with label on the box
+     */
     public static void fieldWithLabel(TextField field, String text, String name, VBox playersBox) {
         field.setPrefWidth(150);
         field.setText(text);
@@ -119,6 +130,9 @@ public class MemoGameApp extends Application {
         playersBox.getChildren().addAll(label, field);
     }
 
+    /**
+     * The method starts the game: defines initial parameters and draws the grid with all images from the folder
+     */
     private void startGame(String folderName, Stage stage) throws IllegalArgumentException {
         try {
             cardList = new CardList(folderName);
@@ -136,6 +150,10 @@ public class MemoGameApp extends Application {
         showInfo();
     }
 
+    /**
+     * The method draws the grid with all images from the folder
+     * The new Timeline starts in this method (timer on the window's title)
+     */
     public void drawImagesOnGrid(CardList cardList, Stage stage) {
 
         GridPane gridPane = new GridPane();
@@ -193,6 +211,10 @@ public class MemoGameApp extends Application {
         stage.show();
     }
 
+    /**
+     * The method describes the action that occurs when the mouse button is clicked on the button
+     * It takes a button, the card and the stage as parameters.
+     */
     public void clickOnIt(Button btn, Card card, Stage stage) {
 
         if (isPaused) { return;}
@@ -238,6 +260,9 @@ public class MemoGameApp extends Application {
         step = (step == 1) ? 0 : 1;
     }
 
+    /**
+     * The method describes the end of the game
+     */
     public void finishTheGame(Stage stage) {
 
         timeline.stop();
@@ -256,6 +281,10 @@ public class MemoGameApp extends Application {
         drawStartPanel(stage, titleLabel);
     }
 
+    /**
+     * The method is used to set some visual parameters to the list of buttons
+     * It takes a state, width, height and the list of buttons as parameters.
+     */
     public void btnParameters(int state, int btnW, int btnH, Button ...btns) {
         for (Button btn : btns) {
             btn.setMinWidth(btnW);
@@ -278,6 +307,9 @@ public class MemoGameApp extends Application {
         }
     }
 
+    /**
+     * The method draws the panel with info abour players
+     */
     public HBox infoPanel() {
         HBox flBox = new HBox(10);
 
@@ -304,12 +336,13 @@ public class MemoGameApp extends Application {
         labelCurrent.setAlignment(Pos.BASELINE_CENTER);
         labelCurrent.setTextFill(Color.BROWN);
 
-
         flBox.getChildren().addAll(label1name, label1score, labelCurrent, label2name, label2score);
-
         return flBox;
     }
 
+    /**
+     * The method sets some visual parameters for the list of labels
+     */
     public void setLabelParams(Label... lbls) {
         for (Label lbl : lbls) {
             lbl.setFont(Font.font("Arial", 16));
@@ -317,6 +350,9 @@ public class MemoGameApp extends Application {
         }
     }
 
+    /**
+     * The method shows the score information, it is called every time when the button is clicked
+     */
     public void showInfo() {
         label1score.setText(Integer.toString(player1.getScore()));
         label2score.setText(Integer.toString(player2.getScore()));
